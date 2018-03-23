@@ -4,6 +4,8 @@ REVOCAP_Refiner-1.1.04.tar.gz
 REVOCAP_Refiner-1.1.04/
 Trilinos/
 local/
+scotch_6.0.5a.tar.gz
+scotch_6.0.5a/
 metis-5.1.0.tar.gz
 metis-5.1.0/
 parmetis-4.0.3.tar.gz

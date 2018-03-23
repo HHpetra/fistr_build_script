@@ -149,6 +149,33 @@ build_parmetis() {
 }
 
 ########################################
+# scotch-6.0.5a
+# If you use scotch, you don't need metis
+########################################
+SCOTCH="scotch_6.0.5a"
+get_scotch() {
+  if [ ! -f ${SCOTCH}.tar.gz ]; then
+    curl ${CURL_FLAGS} -L -O https://gforge.inria.fr/frs/download.php/file/37401/${SCOTCH}.tar.gz
+  else
+    echo "Already downloaded ${SCOTCH}.tar.gz"
+  fi
+}
+build_scotch() {
+  if [ -f ${SCOTCH}.tar.gz ]; then
+    tar xvf ${SCOTCH}.tar.gz
+    cd ${SCOTCH}/src
+    cp Make.inc/Makefile.inc.x86-64_pc_linux2
+    sed -i \
+      -e "s|prefix          ?= /usr/local|prefix	?= ${LIB_ROOT}|" \
+      Makefile
+    make
+    make install
+    cd ${BUILD_ROOT}
+  else
+    echo "No ${SCOTCH} archive"
+  fi
+}
+########################################
 # scalapack-2.0.2
 ########################################
 SCALAPACK="scalapack-2.0.2"
@@ -521,7 +548,8 @@ if [ ${COMPILER} = "GNU" ]; then
   get_openblas &
   get_scalapack &
 fi
-get_metis &
+get_scotch &
+#get_metis &
 #get_parmetis &
 get_refiner &
 get_mumps &
@@ -532,7 +560,8 @@ wait
 if [ ${COMPILER} = "GNU" ]; then
   build_openblas &
 fi
-build_metis &
+build_scotch &
+#build_metis &
 #build_parmetis &
 build_refiner &
 wait
